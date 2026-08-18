@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{A1DFE0E9-AED3-468E-8257-55294290243C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe.Api", "backend\TicTacToe.Api\TicTacToe.Api.csproj", "{9BF24D9A-F9A8-4007-8489-E2BFD3884E2B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BF24D9A-F9A8-4007-8489-E2BFD3884E2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BF24D9A-F9A8-4007-8489-E2BFD3884E2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BF24D9A-F9A8-4007-8489-E2BFD3884E2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BF24D9A-F9A8-4007-8489-E2BFD3884E2B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9BF24D9A-F9A8-4007-8489-E2BFD3884E2B} = {A1DFE0E9-AED3-468E-8257-55294290243C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {915548AF-33F3-4E74-931C-92014F46972E}
+	EndGlobalSection
+EndGlobal
