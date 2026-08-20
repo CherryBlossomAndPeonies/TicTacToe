@@ -65,6 +65,10 @@ npm-debug.log
 yarn-error.log
 dist/
 build/
+tmp/
+out-tsc/
+.angular/cache/
+coverage/
 
 # OS specific
 .DS_Store

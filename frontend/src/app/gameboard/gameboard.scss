@@ -1,0 +1,122 @@
+:host {
+	display: block;
+}
+
+.gameboard-screen {
+	min-height: 100svh;
+	display: grid;
+	place-items: center;
+	padding: 2rem 1rem;
+	background:
+		linear-gradient(135deg, rgba(251, 133, 134, 0.35), transparent 42%),
+		linear-gradient(315deg, rgba(111, 73, 182, 0.45), transparent 55%),
+		#f4c3c5;
+}
+
+.gameboard-panel {
+	width: min(100%, 30rem);
+	text-align: center;
+}
+
+.eyebrow {
+	margin: 0;
+	color: #70400f;
+	font: 800 0.85rem/1 'Trebuchet MS', sans-serif;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+h1 {
+	margin: 0.4rem 0 0;
+	color: #241d20;
+	font: 900 clamp(2.4rem, 11vw, 4.5rem)/0.9 Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	text-shadow: 2px 3px 0 rgba(255, 255, 255, 0.45);
+}
+
+.turn-indicator {
+	margin: 1rem 0;
+	color: #241d20;
+	font: 700 1rem/1.2 'Trebuchet MS', sans-serif;
+}
+
+.game-board {
+	width: min(100%, 28rem);
+	aspect-ratio: 1;
+	margin: 0 auto 1.5rem;
+	padding: 1.25rem;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	border: 3px solid #422d3a;
+	border-radius: 1.1rem;
+	background: #211d20;
+	box-shadow: 0 0.7rem 0 #5d335b, 0 1rem 1.7rem rgba(45, 25, 50, 0.3);
+}
+
+.board-cell {
+	min-width: 0;
+	min-height: 0;
+	border: 0;
+	background: transparent;
+	color: #f6f1ef;
+	cursor: pointer;
+	font: 700 clamp(3.2rem, 15vw, 5.5rem)/1 'Trebuchet MS', sans-serif;
+}
+
+.board-cell:nth-child(3n + 2),
+.board-cell:nth-child(3n + 3) {
+	border-left: 0.3rem solid #f6f1ef;
+}
+
+.board-cell:nth-child(n + 4) {
+	border-top: 0.3rem solid #f6f1ef;
+}
+
+.board-cell:hover:not(:disabled) {
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.board-cell:focus-visible {
+	position: relative;
+	z-index: 1;
+	outline: 0.2rem solid #91f23b;
+	outline-offset: -0.35rem;
+}
+
+.board-cell:disabled {
+	cursor: default;
+}
+
+.cell-x { color: #ed4778; }
+.cell-o { color: #48a9e8; }
+
+.reset-button {
+	min-height: 3.2rem;
+	padding: 0 1.4rem;
+	border: 2px solid #9d591a;
+	border-radius: 1rem;
+	background: linear-gradient(#ffc34a, #f5a623);
+	box-shadow: 0 0.28rem 0 #a45a18;
+	color: #70400f;
+	cursor: pointer;
+	font: 800 1rem/1 'Trebuchet MS', sans-serif;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.reset-button:active {
+	transform: translateY(0.2rem);
+	box-shadow: 0 0.08rem 0 #a45a18;
+}
+
+.reset-button:focus-visible {
+	outline: 0.2rem solid #fff;
+	outline-offset: 0.2rem;
+}
+
+@media (max-width: 30rem) {
+	.gameboard-screen { padding: 1.5rem 0.8rem; }
+	.game-board { padding: 0.8rem; }
+}

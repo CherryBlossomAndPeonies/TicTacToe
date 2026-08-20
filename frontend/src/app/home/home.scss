@@ -1,0 +1,167 @@
+
+:host {
+	display: block;
+}
+
+.home-screen {
+	min-height: 100svh;
+	display: grid;
+	place-items: center;
+	padding: 2rem 1rem;
+	overflow: hidden;
+	background:
+		linear-gradient(135deg, rgba(251, 133, 134, 0.35), transparent 42%),
+		linear-gradient(315deg, rgba(111, 73, 182, 0.45), transparent 55%),
+		#f4c3c5;
+	position: relative;
+}
+
+.home-screen::before,
+.home-screen::after {
+	content: '';
+	position: absolute;
+	width: 24rem;
+	height: 24rem;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.18);
+	filter: blur(2px);
+	transform: rotate(25deg);
+}
+
+.home-screen::before {
+	top: -8rem;
+	left: -7rem;
+}
+
+.home-screen::after {
+	right: -9rem;
+	bottom: -7rem;
+}
+
+.game-menu {
+	width: min(100%, 28rem);
+	position: relative;
+	z-index: 1;
+	text-align: center;
+}
+
+.brand-lockup {
+	margin-bottom: 1rem;
+}
+
+.brand-mark {
+	display: block;
+	color: #ef476f;
+	font: 700 0.85rem/1 'Trebuchet MS', sans-serif;
+	letter-spacing: 0.55rem;
+	margin-left: 0.55rem;
+	text-transform: uppercase;
+}
+
+h1 {
+	margin: 0.35rem 0 0;
+	color: #241d20;
+	font: 900 clamp(2.45rem, 11vw, 4.7rem)/0.9 Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	text-shadow: 2px 3px 0 rgba(255, 255, 255, 0.45);
+}
+
+.board-preview {
+	width: min(100%, 25rem);
+	aspect-ratio: 1;
+	margin: 0 auto 1.4rem;
+	padding: 1.25rem;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr);
+	position: relative;
+	overflow: hidden;
+	border: 3px solid #422d3a;
+	border-radius: 1.1rem;
+	background: #211d20;
+	box-shadow: 0 0.7rem 0 #5d335b, 0 1rem 1.7rem rgba(45, 25, 50, 0.3);
+}
+
+.board-cell {
+	display: grid;
+	place-items: center;
+	color: #f6f1ef;
+	font: 700 clamp(3.2rem, 15vw, 5.5rem)/1 'Trebuchet MS', sans-serif;
+}
+
+.cell-x { color: #ed4778; }
+.cell-o { color: #48a9e8; }
+
+.board-cell:nth-child(3n + 2),
+.board-cell:nth-child(3n + 3) {
+	border-left: 0.3rem solid #f6f1ef;
+}
+
+.board-cell:nth-child(n + 4) {
+	border-top: 0.3rem solid #f6f1ef;
+}
+
+.win-line {
+	width: 120%;
+	height: 0.65rem;
+	position: absolute;
+	top: 49%;
+	left: -10%;
+	border-radius: 1rem;
+	background: #91f23b;
+	box-shadow: 0 0 0.25rem rgba(145, 242, 59, 0.85);
+	transform: rotate(45deg);
+}
+
+.menu-actions {
+	display: grid;
+	gap: 0.55rem;
+}
+
+.menu-button {
+	min-height: 3.4rem;
+	display: grid;
+	place-items: center;
+	border: 2px solid #9d591a;
+	border-radius: 1rem;
+	background: linear-gradient(#ffc34a, #f5a623);
+	box-shadow: 0 0.28rem 0 #a45a18, 0 0.5rem 0.75rem rgba(92, 44, 26, 0.2);
+	color: #70400f;
+	cursor: pointer;
+	font: 800 1.15rem/1 'Trebuchet MS', sans-serif;
+	letter-spacing: 0.06em;
+	text-decoration: none;
+	text-transform: uppercase;
+	transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+}
+
+.menu-button:hover { filter: brightness(1.06); }
+.menu-button:active {
+	transform: translateY(0.2rem);
+	box-shadow: 0 0.08rem 0 #a45a18;
+}
+.menu-button:focus-visible {
+	outline: 0.2rem solid #fff;
+	outline-offset: 0.2rem;
+}
+
+.score-button {
+	margin-top: 0.35rem;
+	background: linear-gradient(#8ed8ff, #439ddd);
+	border-color: #236da6;
+	box-shadow: 0 0.28rem 0 #236da6, 0 0.5rem 0.75rem rgba(29, 72, 105, 0.2);
+	color: #123f63;
+}
+
+.selection-status {
+	margin: 1rem 0 0;
+	color: #241d20;
+	font: 700 0.9rem/1.2 'Trebuchet MS', sans-serif;
+}
+
+@media (max-width: 30rem) {
+	.home-screen { padding: 1.5rem 0.8rem; }
+	.board-preview { padding: 0.8rem; }
+	.menu-button { min-height: 3.1rem; }
+}

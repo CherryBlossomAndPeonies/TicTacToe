@@ -1,0 +1,25 @@
+<main class="gameboard-screen">
+	<section class="gameboard-panel" aria-labelledby="gameboard-title">
+		<p class="eyebrow">{{ selectedMode }}</p>
+		<h1 id="gameboard-title">Tic Tac Toe</h1>
+		<p class="turn-indicator" role="status">Player {{ currentPlayer }}'s turn</p>
+
+		<div class="game-board" aria-label="Tic tac toe game board">
+			@for (cell of cells; track $index) {
+				<button
+					class="board-cell"
+					[class.cell-x]="cell === 'X'"
+					[class.cell-o]="cell === 'O'"
+					type="button"
+					[attr.aria-label]="cell ? 'Player ' + cell + ' at cell ' + ($index + 1) : 'Empty cell ' + ($index + 1)"
+					[disabled]="!!cell"
+					(click)="makeMove($index)"
+				>
+					{{ cell }}
+				</button>
+			}
+		</div>
+
+		<button class="reset-button" type="button" (click)="resetBoard()">Reset Board</button>
+	</section>
+</main>
