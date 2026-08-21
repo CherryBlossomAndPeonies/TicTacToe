@@ -6,7 +6,7 @@
 	min-height: 100svh;
 	display: grid;
 	place-items: center;
-	padding: 0.75rem 1rem;
+	padding: 0.3rem 1rem;
 	background:
 		linear-gradient(135deg, rgba(251, 133, 134, 0.35), transparent 42%),
 		linear-gradient(315deg, rgba(111, 73, 182, 0.45), transparent 55%),
@@ -18,8 +18,44 @@
 	text-align: center;
 }
 
+.board-aligned-header {
+	position: relative;
+	width: min(100%, 28rem);
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2rem;
+}
+
+.home-icon {
+	display: grid;
+	place-items: center;
+	flex: 0 0 2rem;
+	width: 2rem;
+	height: 2rem;
+	border: 2px solid #422d3a;
+	border-radius: 0.55rem;
+	background: #211d20;
+	box-shadow: 0 0.2rem 0 #5d335b;
+	color: #ffc34a;
+	font: 900 1.45rem/1 Georgia, serif;
+	text-decoration: none;
+}
+
+.board-aligned-header .home-icon {
+	position: absolute;
+	left: 0;
+}
+
+.home-icon:focus-visible {
+	outline: 0.2rem solid #fff;
+	outline-offset: 0.2rem;
+}
+
 .eyebrow {
 	margin: 0;
+	text-align: center;
 	color: #70400f;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
@@ -35,13 +71,8 @@ h1 {
 }
 
 .turn-indicator {
-	margin: 0.65rem 0;
-	color: #241d20;
-	font: 700 1rem/1.2 'Trebuchet MS', sans-serif;
-}
-
-.winning-message {
 	display: inline-block;
+	margin: 0.35rem 0 0.55rem;
 	color: #64c5de;
 	font-size: xx-large;
 }
@@ -85,7 +116,7 @@ h1 {
 .game-board {
 	width: min(100%, 28rem, calc(100vw - 2rem), calc(100svh - 16rem));
 	aspect-ratio: 1;
-	margin: 0 auto 0.8rem;
+	margin: 0 auto 1.25rem;
 	padding: clamp(0.65rem, 2vw, 1.25rem);
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -93,7 +124,7 @@ h1 {
 	border: 3px solid #422d3a;
 	border-radius: 1.1rem;
 	background: #211d20;
-	box-shadow: 0 0.7rem 0 #5d335b, 0 1rem 1.7rem rgba(45, 25, 50, 0.3);
+	box-shadow: 0 0.3rem 0 #5d335b, 0 1rem 1.7rem rgba(45, 25, 50, 0.3);
 }
 
 .board-cell {
@@ -151,11 +182,6 @@ h1 {
 	100% { opacity: 1; transform: scale(1); }
 }
 
-@keyframes winning-message-pulse {
-	from { filter: brightness(1); }
-	to { filter: brightness(1.35); }
-}
-
 .reset-button {
 	min-height: 2.7rem;
 	padding: 0 1rem;
@@ -196,6 +222,8 @@ h1 {
 
 .game-actions {
 	display: flex;
+	width: min(100%, 28rem);
+	margin: 0 auto;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -268,7 +296,6 @@ h1 {
 	to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.home-link,
 .scoreboard-link {
 	color: #70400f;
 	font: 800 0.9rem/1 'Trebuchet MS', sans-serif;
@@ -286,10 +313,10 @@ h1 {
 }
 
 @media (max-width: 30rem) {
-	.gameboard-screen { padding: 0.55rem 0.65rem; }
+	.gameboard-screen { padding: 0.25rem 0.5rem; }
 	.gameboard-panel { width: 100%; }
 	.game-scoreboard { padding-inline: 0.45rem; }
-	.game-board { width: min(100%, calc(100svh - 15rem)); }
+	.game-board { width: min(100%, calc(100vw - 1rem), calc(100svh - 16rem)); }
 	.board-cell { font-size: clamp(2.4rem, 15vw, 4.5rem); }
-	.reset-button, .undo-button { min-height: 2.5rem; font-size: 0.8rem; }
+	.reset-button, .undo-button { min-height: 2.5rem; padding-inline: 0.8rem; font-size: 0.8rem; }
 }

@@ -1,13 +1,20 @@
 <main class="gameboard-screen">
 	<section class="gameboard-panel" aria-labelledby="gameboard-title">
-		<h2 class="eyebrow">{{ selectedMode }}</h2>
-		<p class="turn-indicator winning-message" role="status">
+		<div class="board-aligned-header">
+			<a class="home-icon" routerLink="/" aria-label="Back to Home" title="Back to Home">⌂</a>
+			<h2 class="eyebrow">{{ selectedMode }}</h2>
+		</div>
+		<p class="turn-indicator" role="status">
 			@if (isLoading && game?.gameMode === 1 && currentPlayer === 'O') {
 				Computer is thinking...
 			} @else if (isLoading) {
 				Updating game...
-			} @else {
+			} @else if (game?.gameStatus === 1) {
 				Player {{ currentPlayer }}'s turn
+			} @else if (game?.gameStatus === 2) {
+				Its a draw!
+			} @else {
+				Player {{game?.winner}} has won!
 			}
 		</p>
 
@@ -40,8 +47,7 @@
 
 		<div class="game-actions">
 			<button class="reset-button" type="button" [disabled]="!game || isLoading" (click)="resetBoard()">Reset Game</button>
-			<button class="undo-button" type="button" [disabled]="!game || isLoading || !isGameActive" (click)="undoMove()">Undo Move</button>
-			<a class="home-link" routerLink="/">Back to Home</a>
+			<button class="undo-button" type="button" [disabled]="!game || isLoading || !isGameActive || !hasMoves" (click)="undoMove()">Undo Move</button>
 		</div>
 	</section>
 

@@ -25,6 +25,10 @@ export class Gameboard implements OnInit {
   showCompletionPopup = false;
   scoreboard: Scoreboard = { id: 0, winsX: 0, winsO: 0, draws: 0 };
 
+  get hasMoves(): boolean {
+    return this.cells.some(cell => cell !== null);
+  }
+
   constructor(
     readonly route: ActivatedRoute,
     private readonly gameService: GameService,

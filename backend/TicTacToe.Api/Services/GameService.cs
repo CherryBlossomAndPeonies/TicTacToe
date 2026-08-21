@@ -89,7 +89,7 @@ public class GameService
 
         if (game.GameMode == GameMode.SinglePlayer && game.GameStatus == GameStatus.Active)
         {
-            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+            await Task.Delay(TimeSpan.FromMilliseconds(500), cancellationToken);
 
             MakeComputerMove(game);
         }
