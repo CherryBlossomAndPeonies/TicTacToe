@@ -1,8 +1,25 @@
 <main class="gameboard-screen">
 	<section class="gameboard-panel" aria-labelledby="gameboard-title">
-		<p class="eyebrow">{{ selectedMode }}</p>
-		<h1 id="gameboard-title">Tic Tac Toe</h1>
-		<p class="turn-indicator" role="status">Player {{ currentPlayer }}'s turn</p>
+		<h2 class="eyebrow">{{ selectedMode }}</h2>
+		<p class="turn-indicator winning-message" role="status">
+			@if (isLoading && game?.gameMode === 1 && currentPlayer === 'O') {
+				Computer is thinking...
+			} @else if (isLoading) {
+				Updating game...
+			} @else {
+				Player {{ currentPlayer }}'s turn
+			}
+		</p>
+
+		<section class="game-scoreboard" aria-label="Game scoreboard">
+			<div class="score-row"><span>Player X:</span><strong>{{ scoreboard.winsX }}</strong></div>
+			<div class="score-row"><span>Player O:</span><strong>{{ scoreboard.winsO }}</strong></div>
+			<div class="score-row"><span>Draws:</span><strong>{{ scoreboard.draws }}</strong></div>
+		</section>
+
+		@if (errorMessage) {
+			<p class="error-message" role="alert">{{ errorMessage }}</p>
+		}
 
 		<div class="game-board" aria-label="Tic tac toe game board">
 			@for (cell of cells; track $index) {
@@ -10,6 +27,7 @@
 					class="board-cell"
 					[class.cell-x]="cell === 'X'"
 					[class.cell-o]="cell === 'O'"
+					[class.winning-cell]="winningCells.includes($index + 1)"
 					type="button"
 					[attr.aria-label]="cell ? 'Player ' + cell + ' at cell ' + ($index + 1) : 'Empty cell ' + ($index + 1)"
 					[disabled]="!!cell"
@@ -20,6 +38,26 @@
 			}
 		</div>
 
-		<button class="reset-button" type="button" (click)="resetBoard()">Reset Board</button>
+		<div class="game-actions">
+			<button class="reset-button" type="button" [disabled]="!game || isLoading" (click)="resetBoard()">Reset Game</button>
+			<button class="undo-button" type="button" [disabled]="!game || isLoading || !isGameActive" (click)="undoMove()">Undo Move</button>
+			<a class="home-link" routerLink="/">Back to Home</a>
+		</div>
 	</section>
+
+	@if (showCompletionPopup && game) {
+		<div class="completion-backdrop" role="presentation">
+			<section class="completion-popup" role="dialog" aria-modal="true" aria-labelledby="completion-title">
+				<p class="completion-kicker">Game complete</p>
+				<h3 id="completion-title">
+					@if (game.gameStatus === 2) {
+						It's a draw!
+					} @else {
+						Player {{ game.winner }} wins!
+					}
+				</h3>
+				<button class="close-popup-button" type="button" (click)="closeCompletionPopup()">Close</button>
+			</section>
+		</div>
+	}
 </main>

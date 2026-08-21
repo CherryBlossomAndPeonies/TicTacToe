@@ -14,23 +14,15 @@ public class ScoreboardService
         this.dbContext = dbContext;
     }
 
-    public async Task<ScoreboardDto?> GetAsync(int gameId, CancellationToken cancellationToken)
+    public async Task<ScoreboardDto> GetAsync(int gameId, CancellationToken cancellationToken)
     {
-        var scoreboard = await dbContext.Set<Scoreboard>()
-            .AsNoTracking()
-            .SingleOrDefaultAsync(currentScoreboard => currentScoreboard.GameId == gameId, cancellationToken);
-
-        return scoreboard?.ToDto();
+        var scoreboard = await GetScoreboardAsync(gameId, cancellationToken);
+        return scoreboard.ToDto();
     }
 
-    public async Task<ScoreboardDto?> ResetAsync(int gameId, CancellationToken cancellationToken)
+    public async Task<ScoreboardDto> ResetAsync(int gameId, CancellationToken cancellationToken)
     {
-        var scoreboard = await GetOrCreateAsync(gameId, cancellationToken);
-        if (scoreboard is null)
-        {
-            return null;
-        }
-
+        var scoreboard = await GetScoreboardAsync(gameId, cancellationToken);
         ResetValues(scoreboard);
         await dbContext.SaveChangesAsync(cancellationToken);
         return scoreboard.ToDto();
@@ -38,52 +30,36 @@ public class ScoreboardService
 
     internal async Task RecordResultAsync(int gameId, GameStatus gameStatus, char? winner, CancellationToken cancellationToken)
     {
-        var scoreboard = await GetOrCreateAsync(gameId, cancellationToken);
-        if (scoreboard is null)
-        {
-            return;
-        }
-
+        var scoreboard = await GetOrCreateScoreboardAsync(gameId, cancellationToken);
         ApplyResult(scoreboard, gameStatus, winner, 1);
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    internal async Task RemoveResultAsync(int gameId, GameStatus gameStatus, char? winner, CancellationToken cancellationToken)
-    {
-        var scoreboard = await GetOrCreateAsync(gameId, cancellationToken);
-        if (scoreboard is null)
-        {
-            return;
-        }
-
-        ApplyResult(scoreboard, gameStatus, winner, -1);
-        await dbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    private async Task<Scoreboard?> GetOrCreateAsync(int gameId, CancellationToken cancellationToken)
+    private async Task<Scoreboard> GetOrCreateScoreboardAsync(int gameId, CancellationToken cancellationToken)
     {
         var scoreboard = await dbContext.Set<Scoreboard>()
-            .SingleOrDefaultAsync(currentScoreboard => currentScoreboard.GameId == gameId, cancellationToken);
+            .SingleOrDefaultAsync(currentScoreboard => currentScoreboard.Id == gameId, cancellationToken);
 
-        if (scoreboard is not null)
+        if (scoreboard is null)
         {
-            return scoreboard;
+            scoreboard = new Scoreboard { Id = gameId };
+            dbContext.Set<Scoreboard>().Add(scoreboard);
         }
 
-        if (!await dbContext.Set<Game>().AnyAsync(game => game.GameId == gameId, cancellationToken))
-        {
-            return null;
-        }
-
-        scoreboard = new Scoreboard { GameId = gameId };
-        dbContext.Set<Scoreboard>().Add(scoreboard);
         return scoreboard;
+    }
+
+    private async Task<Scoreboard> GetScoreboardAsync(int gameId, CancellationToken cancellationToken)
+    {
+        return await dbContext.Set<Scoreboard>()
+            .SingleOrDefaultAsync(currentScoreboard => currentScoreboard.Id == gameId, cancellationToken)
+            ?? throw new KeyNotFoundException($"Scoreboard for game {gameId} was not found.");
     }
 
     private static void ResetValues(Scoreboard scoreboard)
     {
-        scoreboard.XWins = 0;
-        scoreboard.OWins = 0;
+        scoreboard.WinsX = 0;
+        scoreboard.WinsO = 0;
         scoreboard.Draws = 0;
     }
 
@@ -95,11 +71,11 @@ public class ScoreboardService
         }
         else if (gameStatus == GameStatus.Completed && winner == 'X')
         {
-            scoreboard.XWins += amount;
+            scoreboard.WinsX += amount;
         }
         else if (gameStatus == GameStatus.Completed && winner == 'O')
         {
-            scoreboard.OWins += amount;
+            scoreboard.WinsO += amount;
         }
     }
 }
@@ -110,10 +86,10 @@ internal static class ScoreboardMappingExtensions
     {
         return new ScoreboardDto
         {
-            GameId = scoreboard.GameId,
-            XWins = scoreboard.XWins,
-            OWins = scoreboard.OWins,
-            Draws = scoreboard.Draws
+            Id = scoreboard.Id,
+            WinsX = scoreboard.WinsX,
+            WinsO = scoreboard.WinsO,
+            Draws = scoreboard.Draws,
         };
     }
 }

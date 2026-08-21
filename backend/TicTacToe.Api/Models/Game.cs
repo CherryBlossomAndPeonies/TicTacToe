@@ -8,7 +8,6 @@ public class Game
     public Game()
     {
         BoardState = new BoardState();
-        Scoreboard = new Scoreboard();
     }
 
     public int GameId { get; set; }
@@ -40,7 +39,6 @@ public class Game
 
     public virtual BoardState BoardState { get; set; }
     public virtual ICollection<GameMove> Moves { get; set; } = new List<GameMove>();
-    public virtual Scoreboard Scoreboard { get; set; }
 }
 
 /// <summary>

@@ -15,8 +15,34 @@ public static class GameMappingExtensions
             GameMode = game.GameMode,
             Winner = game.Winner,
             GameStatus = game.GameStatus,
+            WinningCells = GetWinningCells(game.BoardState, game.Winner),
             BoardState = game.BoardState.ToDto()
         };
+    }
+
+    private static IReadOnlyList<int> GetWinningCells(BoardState boardState, char? winner)
+    {
+        if (winner is null)
+        {
+            return Array.Empty<int>();
+        }
+
+        var cells = new[]
+        {
+            boardState.Cell1, boardState.Cell2, boardState.Cell3,
+            boardState.Cell4, boardState.Cell5, boardState.Cell6,
+            boardState.Cell7, boardState.Cell8, boardState.Cell9
+        };
+
+        var winningLines = new[]
+        {
+            new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 7, 8, 9 },
+            new[] { 1, 4, 7 }, new[] { 2, 5, 8 }, new[] { 3, 6, 9 },
+            new[] { 1, 5, 9 }, new[] { 3, 5, 7 }
+        };
+
+        return winningLines.FirstOrDefault(line => line.All(cellIndex => cells[cellIndex - 1] == winner))
+            ?? Array.Empty<int>();
     }
 
     private static BoardStateDto ToDto(this BoardState boardState)

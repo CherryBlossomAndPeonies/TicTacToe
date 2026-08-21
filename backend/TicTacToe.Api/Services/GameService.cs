@@ -55,6 +55,11 @@ public class GameService
             throw new InvalidOperationException("The game is already finished.");
         }
 
+        if (game.GameMode == GameMode.SinglePlayer && game.CurrentPlayer != 'X')
+        {
+            throw new InvalidOperationException("It is not the human player's turn.");
+        }
+
         if (GetCell(game.BoardState, cellIndex) is not null)
         {
             throw new InvalidOperationException("That cell is already occupied.");
@@ -65,8 +70,7 @@ public class GameService
         game.Moves.Add(new GameMove
         {
             CellIndex = cellIndex,
-            Player = player,
-            PlayedAt = DateTime.UtcNow
+            Player = player
         });
 
         if (HasWinner(game.BoardState, player))
@@ -81,6 +85,13 @@ public class GameService
         else
         {
             game.CurrentPlayer = player == 'X' ? 'O' : 'X';
+        }
+
+        if (game.GameMode == GameMode.SinglePlayer && game.GameStatus == GameStatus.Active)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+
+            MakeComputerMove(game);
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -104,6 +115,12 @@ public class GameService
 
         var previousStatus = game.GameStatus;
         var previousWinner = game.Winner;
+
+        if (previousStatus != GameStatus.Active)
+        {
+            throw new InvalidOperationException("The game is not active.");
+        }
+
         SetCell(game.BoardState, lastMove.CellIndex, null);
         game.Moves.Remove(lastMove);
         game.CurrentPlayer = lastMove.Player;
@@ -111,11 +128,6 @@ public class GameService
         game.GameStatus = GameStatus.Active;
 
         await dbContext.SaveChangesAsync(cancellationToken);
-
-        if (previousStatus != GameStatus.Active)
-        {
-            await scoreboardService.RemoveResultAsync(game.GameId, previousStatus, previousWinner, cancellationToken);
-        }
 
         return game.ToDto();
     }
@@ -126,8 +138,6 @@ public class GameService
             .SingleOrDefaultAsync(currentGame => currentGame.GameId == gameId, cancellationToken)
             ?? throw new KeyNotFoundException($"Game {gameId} was not found.");
 
-        var previousStatus = game.GameStatus;
-        var previousWinner = game.Winner;
         SetCellValues(game.BoardState, null);
         game.Moves.Clear();
         game.CurrentPlayer = 'X';
@@ -135,11 +145,6 @@ public class GameService
         game.GameStatus = GameStatus.Active;
 
         await dbContext.SaveChangesAsync(cancellationToken);
-
-        if (previousStatus != GameStatus.Active)
-        {
-            await scoreboardService.RemoveResultAsync(game.GameId, previousStatus, previousWinner, cancellationToken);
-        }
 
         return game.ToDto();
     }
@@ -212,6 +217,63 @@ public class GameService
         };
 
         return winningLines.Any(line => line.All(index => cells[index] == player));
+    }
+
+    private static void MakeComputerMove(Game game)
+    {
+        var cellIndex = FindWinningMove(game.BoardState, 'O')
+            ?? FindWinningMove(game.BoardState, 'X')
+            ?? (GetCell(game.BoardState, 5) is null ? (int?)5 : null)
+            ?? new[] { 1, 3, 7, 9 }.FirstOrDefault(index => GetCell(game.BoardState, index) is null);
+
+        if (cellIndex == 0)
+        {
+            cellIndex = Enumerable.Range(1, 9)
+                .First(index => GetCell(game.BoardState, index) is null);
+        }
+
+        SetCell(game.BoardState, cellIndex, 'O');
+        game.Moves.Add(new GameMove
+        {
+            CellIndex = cellIndex,
+            Player = 'O'
+        });
+
+        if (HasWinner(game.BoardState, 'O'))
+        {
+            game.Winner = 'O';
+            game.GameStatus = GameStatus.Completed;
+        }
+        else if (IsDraw(game.BoardState))
+        {
+            game.GameStatus = GameStatus.Draw;
+        }
+        else
+        {
+            game.CurrentPlayer = 'X';
+        }
+    }
+
+    private static int? FindWinningMove(BoardState boardState, char player)
+    {
+        foreach (var cellIndex in Enumerable.Range(1, 9))
+        {
+            if (GetCell(boardState, cellIndex) is not null)
+            {
+                continue;
+            }
+
+            SetCell(boardState, cellIndex, player);
+            var wins = HasWinner(boardState, player);
+            SetCell(boardState, cellIndex, null);
+
+            if (wins)
+            {
+                return cellIndex;
+            }
+        }
+
+        return null;
     }
 
     private static bool IsDraw(BoardState boardState)

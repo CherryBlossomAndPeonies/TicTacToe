@@ -63,6 +63,8 @@ appsettings.Development.json
 node_modules/
 npm-debug.log
 yarn-error.log
+# The workspace root has no package manifest; frontend dependencies belong to frontend/package-lock.json.
+/package-lock.json
 dist/
 build/
 tmp/

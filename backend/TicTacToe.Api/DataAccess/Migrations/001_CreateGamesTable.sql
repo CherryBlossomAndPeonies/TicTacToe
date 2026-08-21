@@ -1,15 +1,9 @@
--- Migration: Create Games Table
--- Description: Creates the Games table to store TicTacToe game instances
-
 CREATE TABLE IF NOT EXISTS Games (
     GameId INTEGER PRIMARY KEY AUTOINCREMENT,
-    CurrentPlayer CHAR NOT NULL,
-    BoardStateId INTEGER NOT NULL,
+    CurrentPlayer TEXT NOT NULL,
+    BoardStateId INTEGER NOT NULL UNIQUE,
     GameMode INTEGER NOT NULL,
-    Winner CHAR,
+    Winner TEXT,
     GameStatus INTEGER NOT NULL,
-    FOREIGN KEY (BoardStateId) REFERENCES BoardStates(BoardId)
+    FOREIGN KEY (BoardStateId) REFERENCES BoardState(BoardId)
 );
-
--- Create index on BoardStateId for faster lookups
-CREATE INDEX IF NOT EXISTS idx_games_board_state_id ON Games(BoardStateId);

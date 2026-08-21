@@ -12,15 +12,13 @@ public class ScoreboardController(ScoreboardService scoreboardService) : Control
     [ProducesResponseType<ScoreboardDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<ScoreboardDto>> Get(int gameId, CancellationToken cancellationToken)
     {
-        var scoreboard = await scoreboardService.GetAsync(gameId, cancellationToken);
-        return scoreboard is null ? NotFound() : Ok(scoreboard);
+        return Ok(await scoreboardService.GetAsync(gameId, cancellationToken));
     }
 
     [HttpPost("{gameId:int}/reset")]
     [ProducesResponseType<ScoreboardDto>(StatusCodes.Status200OK)]
     public async Task<ActionResult<ScoreboardDto>> Reset(int gameId, CancellationToken cancellationToken)
     {
-        var scoreboard = await scoreboardService.ResetAsync(gameId, cancellationToken);
-        return scoreboard is null ? NotFound() : Ok(scoreboard);
+        return Ok(await scoreboardService.ResetAsync(gameId, cancellationToken));
     }
 }

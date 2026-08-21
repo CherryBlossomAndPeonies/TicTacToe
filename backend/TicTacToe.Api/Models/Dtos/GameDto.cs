@@ -8,5 +8,6 @@ public sealed class GameDto
     public GameMode GameMode { get; init; }
     public char? Winner { get; init; }
     public GameStatus GameStatus { get; init; }
+    public IReadOnlyList<int> WinningCells { get; init; } = Array.Empty<int>();
     public required BoardStateDto BoardState { get; init; }
 }

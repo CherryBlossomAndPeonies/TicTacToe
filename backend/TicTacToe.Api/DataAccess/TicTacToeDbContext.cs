@@ -23,12 +23,23 @@ public class TicTacToeDbContext(DbContextOptions<TicTacToeDbContext> options) : 
             .IsRequired();
 
         modelBuilder.Entity<Scoreboard>()
-            .HasKey(scoreboard => scoreboard.GameId);
+            .ToTable("Scoreboard")
+            .HasKey(scoreboard => scoreboard.Id);
 
         modelBuilder.Entity<Scoreboard>()
-            .HasOne(scoreboard => scoreboard.Game)
-            .WithOne(game => game.Scoreboard)
-            .HasForeignKey<Scoreboard>(scoreboard => scoreboard.GameId)
-            .IsRequired();
+            .Property(scoreboard => scoreboard.Id)
+            .ValueGeneratedNever();
+
+        modelBuilder.Entity<Scoreboard>()
+            .Property(scoreboard => scoreboard.WinsX)
+            .HasDefaultValue(0);
+
+        modelBuilder.Entity<Scoreboard>()
+            .Property(scoreboard => scoreboard.WinsO)
+            .HasDefaultValue(0);
+
+        modelBuilder.Entity<Scoreboard>()
+            .Property(scoreboard => scoreboard.Draws)
+            .HasDefaultValue(0);
     }
 }
