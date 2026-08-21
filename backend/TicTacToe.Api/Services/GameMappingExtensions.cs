@@ -16,8 +16,24 @@ public static class GameMappingExtensions
             Winner = game.Winner,
             GameStatus = game.GameStatus,
             WinningCells = GetWinningCells(game.BoardState, game.Winner),
+            MoveHistory = game.Moves
+                .OrderBy(move => move.GameMoveId)
+                .Select((move, index) => new GameMoveDto
+                {
+                    MoveNumber = index + 1,
+                    Player = move.Player,
+                    Position = GetPosition(move.CellIndex)
+                })
+                .ToArray(),
             BoardState = game.BoardState.ToDto()
         };
+    }
+
+    private static string GetPosition(int cellIndex)
+    {
+        var row = ((cellIndex - 1) / 3) + 1;
+        var column = ((cellIndex - 1) % 3) + 1;
+        return $"Row {row}, Column {column}";
     }
 
     private static IReadOnlyList<int> GetWinningCells(BoardState boardState, char? winner)

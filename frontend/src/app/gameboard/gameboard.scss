@@ -14,7 +14,7 @@
 }
 
 .gameboard-panel {
-	width: min(100%, 30rem);
+	width: min(100%, 49rem);
 	text-align: center;
 }
 
@@ -125,6 +125,67 @@ h1 {
 	border-radius: 1.1rem;
 	background: #211d20;
 	box-shadow: 0 0.3rem 0 #5d335b, 0 1rem 1.7rem rgba(45, 25, 50, 0.3);
+}
+
+.play-area {
+	display: grid;
+	grid-template-columns: minmax(0, 28rem) minmax(15rem, 20rem);
+	align-items: start;
+	justify-content: center;
+	gap: 1rem;
+}
+
+.move-history {
+	width: 100%;
+	margin: 0;
+	padding: 0.75rem;
+	border: 3px solid #422d3a;
+	border-radius: 0.75rem;
+	background: #211d20;
+	box-shadow: 0 0.35rem 0 #5d335b;
+	color: #f6f1ef;
+}
+
+.move-history h3 {
+	margin: 0 0 0.55rem;
+	color: #ffc34a;
+	font: 900 1.15rem/1 Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.move-history-table {
+	display: grid;
+	gap: 0.25rem;
+	overflow-x: auto;
+}
+
+.move-history-row {
+	display: grid;
+	grid-template-columns: 3rem 4.5rem minmax(9rem, 1fr);
+	align-items: center;
+	min-height: 2rem;
+	font: 700 0.85rem/1.1 'Trebuchet MS', sans-serif;
+	text-align: left;
+}
+
+.move-history-row > * { padding: 0 0.35rem; }
+
+.move-history-header {
+	border-bottom: 1px solid rgba(246, 241, 239, 0.35);
+	color: #48a9e8;
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.cell-x-text { color: #ed4778; }
+.cell-o-text { color: #48a9e8; }
+
+.empty-history {
+	margin: 0;
+	color: rgba(246, 241, 239, 0.72);
+	font: 700 0.85rem/1.2 'Trebuchet MS', sans-serif;
 }
 
 .board-cell {
@@ -316,7 +377,17 @@ h1 {
 	.gameboard-screen { padding: 0.25rem 0.5rem; }
 	.gameboard-panel { width: 100%; }
 	.game-scoreboard { padding-inline: 0.45rem; }
+	.play-area { grid-template-columns: 1fr; gap: 0.8rem; }
 	.game-board { width: min(100%, calc(100vw - 1rem), calc(100svh - 16rem)); }
 	.board-cell { font-size: clamp(2.4rem, 15vw, 4.5rem); }
 	.reset-button, .undo-button { min-height: 2.5rem; padding-inline: 0.8rem; font-size: 0.8rem; }
+}
+
+@media (max-width: 55rem) {
+	.play-area { grid-template-columns: minmax(0, 28rem) minmax(13rem, 18rem); }
+}
+
+@media (max-width: 48rem) {
+	.play-area { grid-template-columns: 1fr; }
+	.move-history { width: min(100%, 28rem); margin: 0 auto; }
 }

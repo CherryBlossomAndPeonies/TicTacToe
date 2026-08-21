@@ -28,6 +28,7 @@
 			<p class="error-message" role="alert">{{ errorMessage }}</p>
 		}
 
+		<div class="play-area">
 		<div class="game-board" aria-label="Tic tac toe game board">
 			@for (cell of cells; track $index) {
 				<button
@@ -37,12 +38,35 @@
 					[class.winning-cell]="winningCells.includes($index + 1)"
 					type="button"
 					[attr.aria-label]="cell ? 'Player ' + cell + ' at cell ' + ($index + 1) : 'Empty cell ' + ($index + 1)"
-					[disabled]="!!cell"
+					[disabled]="!!cell || isLoading"
 					(click)="makeMove($index)"
 				>
 					{{ cell }}
 				</button>
 			}
+		</div>
+
+		<section class="move-history" aria-labelledby="move-history-title">
+			<h3 id="move-history-title">Move History</h3>
+			@if (game?.moveHistory?.length) {
+				<div class="move-history-table" role="table" aria-label="Move history">
+					<div class="move-history-row move-history-header" role="row">
+						<span role="columnheader">Move</span>
+						<span role="columnheader">Player</span>
+						<span role="columnheader">Position</span>
+					</div>
+					@for (move of game?.moveHistory; track move.moveNumber) {
+						<div class="move-history-row" role="row">
+							<span role="cell">{{ move.moveNumber }}</span>
+							<strong role="cell" [class.cell-x-text]="move.player === 'X'" [class.cell-o-text]="move.player === 'O'">{{ move.player }}</strong>
+							<span role="cell">{{ move.position }}</span>
+						</div>
+					}
+				</div>
+			} @else {
+				<p class="empty-history">No moves yet</p>
+			}
+		</section>
 		</div>
 
 		<div class="game-actions">

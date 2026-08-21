@@ -17,7 +17,14 @@ export interface Game {
   winner: string | null;
   gameStatus: GameStatus;
   winningCells: number[];
+  moveHistory: GameMove[];
   boardState: BoardState;
+}
+
+export interface GameMove {
+  moveNumber: number;
+  player: 'X' | 'O';
+  position: string;
 }
 
 export interface BoardState {

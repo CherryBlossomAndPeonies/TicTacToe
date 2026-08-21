@@ -9,5 +9,6 @@ public sealed class GameDto
     public char? Winner { get; init; }
     public GameStatus GameStatus { get; init; }
     public IReadOnlyList<int> WinningCells { get; init; } = Array.Empty<int>();
+    public IReadOnlyList<GameMoveDto> MoveHistory { get; init; } = Array.Empty<GameMoveDto>();
     public required BoardStateDto BoardState { get; init; }
 }

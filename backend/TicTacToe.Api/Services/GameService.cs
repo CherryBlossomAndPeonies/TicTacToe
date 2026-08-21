@@ -110,20 +110,48 @@ public class GameService
             .SingleOrDefaultAsync(currentGame => currentGame.GameId == gameId, cancellationToken)
             ?? throw new KeyNotFoundException($"Game {gameId} was not found.");
 
-        var lastMove = game.Moves.OrderByDescending(move => move.GameMoveId).FirstOrDefault()
-            ?? throw new InvalidOperationException("There are no moves to undo.");
-
         var previousStatus = game.GameStatus;
-        var previousWinner = game.Winner;
 
         if (previousStatus != GameStatus.Active)
         {
             throw new InvalidOperationException("The game is not active.");
         }
 
-        SetCell(game.BoardState, lastMove.CellIndex, null);
-        game.Moves.Remove(lastMove);
-        game.CurrentPlayer = lastMove.Player;
+        var orderedMoves = game.Moves
+            .OrderBy(move => move.GameMoveId)
+            .ToArray();
+
+        if (orderedMoves.Length == 0)
+        {
+            throw new InvalidOperationException("There are no moves to undo.");
+        }
+
+        GameMove[] movesToUndo;
+        if (game.GameMode == GameMode.SinglePlayer)
+        {
+            if (orderedMoves.Length < 2
+                || orderedMoves[^2].Player != 'X'
+                || orderedMoves[^1].Player != 'O')
+            {
+                throw new InvalidOperationException("There is no complete computer turn to undo.");
+            }
+
+            movesToUndo = orderedMoves[^2..];
+        }
+        else
+        {
+            movesToUndo = [orderedMoves[^1]];
+        }
+
+        foreach (var move in movesToUndo)
+        {
+            SetCell(game.BoardState, move.CellIndex, null);
+            game.Moves.Remove(move);
+        }
+
+        game.CurrentPlayer = game.GameMode == GameMode.SinglePlayer
+            ? 'X'
+            : movesToUndo[0].Player;
         game.Winner = null;
         game.GameStatus = GameStatus.Active;
 
