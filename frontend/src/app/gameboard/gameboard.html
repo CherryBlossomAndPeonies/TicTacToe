@@ -22,6 +22,7 @@
 			<div class="score-row"><span>Player X:</span><strong>{{ scoreboard.winsX }}</strong></div>
 			<div class="score-row"><span>Player O:</span><strong>{{ scoreboard.winsO }}</strong></div>
 			<div class="score-row"><span>Draws:</span><strong>{{ scoreboard.draws }}</strong></div>
+			<button class="scoreboard-reset-button" type="button" [disabled]="noScoreYet()" (click)="resetScoreboard()">Reset Scoreboard</button>
 		</section>
 
 		@if (errorMessage) {

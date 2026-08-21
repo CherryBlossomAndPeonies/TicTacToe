@@ -61,6 +61,9 @@ export class Gameboard implements OnInit {
     });
   }
 
+  noScoreYet() {
+    return this.game && this.scoreboard.draws == 0 && this.scoreboard.winsO == 0 && this.scoreboard.winsX == 0;
+  }
   resetBoard() {
     this.isLoading = true;
     this.errorMessage = '';
@@ -71,6 +74,24 @@ export class Gameboard implements OnInit {
         error: (res) => this.handleError(res),
       })
     }
+  }
+
+  resetScoreboard() {
+    if (!this.game || this.isLoading) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.scoreboardService.resetScoreboard(this.game.gameId).subscribe({
+      next: scoreboard => {
+        this.scoreboard = scoreboard;
+        this.isLoading = false;
+        this.changeDetectorRef.markForCheck();
+      },
+      error: (res) => this.handleError(res),
+    });
   }
 
   undoMove() {

@@ -113,6 +113,27 @@ h1 {
 
 .score-row span { white-space: nowrap; }
 
+.scoreboard-reset-button {
+	grid-column: 1 / -1;
+	min-height: 2rem;
+	margin-top: 0.35rem;
+	padding: 0 0.75rem;
+	border: 2px solid #9d591a;
+	border-radius: 0.65rem;
+	background: linear-gradient(#ffc34a, #f5a623);
+	box-shadow: 0 0.2rem 0 #a45a18;
+	color: #70400f;
+	cursor: pointer;
+	font: 800 0.72rem/1 'Trebuchet MS', sans-serif;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.scoreboard-reset-button:disabled {
+	opacity: 0.55;
+	cursor: default;
+}
+
 .game-board {
 	width: min(100%, 28rem, calc(100vw - 2rem), calc(100svh - 16rem));
 	aspect-ratio: 1;
