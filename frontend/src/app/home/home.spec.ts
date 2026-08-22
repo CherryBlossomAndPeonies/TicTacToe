@@ -33,6 +33,6 @@ describe('Home', () => {
     expect(compiled.querySelector('h1')?.textContent).toContain('Tic Tac Toe');
     expect(compiled.querySelectorAll('a.menu-button')).toHaveLength(2);
     expect(compiled.textContent).toContain('Two Player');
-    expect(compiled.textContent).toContain('Play Online');
+    expect(compiled.textContent).toContain('Single Player');
   });
 });
